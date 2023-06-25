@@ -7,10 +7,14 @@ class CustomUserCreationForm(UserCreationForm):
     
     class Meta(UserCreationForm):
         model = CustomUser
-        fields = ('username','email',)
+        fields = ('email',)
         
 class CustomUserChangeForm(UserChangeForm):
     
     class Meta:
         model = CustomUser
-        fields = UserChangeForm.Meta.fields
+        fields = UserChangeForm.Meta.fields 
+        
+class LoginForm(forms.Form):
+    email = forms.EmailField(required=True)
+    password = forms.CharField(widget=forms.PasswordInput(), required=True)
