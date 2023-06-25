@@ -1,0 +1,10 @@
+<!-- templates/books/search_results.html -->
+{% extends 'base.html' %}
+{% block title %}Search{% endblock title %}
+{% block content %}
+ <h1>Search Results</h1>
+ {% for result in results %}
+ <h2>{{ result.title }}</h1>
+ <a href="{% url 'file-download' file_id=result.id %}">Download</a>|<a href="{% url 'file_preview' file_id=result.id %}">Preview</a>
+ {% endfor %}
+ {% endblock content%}  

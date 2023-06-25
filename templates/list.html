@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<form class="form-inline mt-2 mt-md-0" action="{% url 'search_results' %}"  method="get">
+ <input name="q" class="form-control mr-sm-2" type="text" placeholder="Search"
+ aria-label="Search">
+ <button type="submit">Search</button>
+ </form>
+{% for post in files %}
+<h2><a href="{% url 'detail' pk=post.pk %}">{{ post.title }}</a></h2>
+
+<a href="{% url 'file-download' file_id=post.id %}">Download</a>|<a href="{% url 'file_preview' file_id=post.id %}">Preview</a><br>
+{% endfor %}
+{% endblock content%}  

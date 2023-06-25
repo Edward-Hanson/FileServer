@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audio Preview</title>
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css">
+</head>
+<body>
+    <audio controls>
+        <source src="{{ file_url }}" type="audio/mp3">
+    </audio>
+
+    <script src="https://cdn.plyr.io/3.6.8/plyr.js"></script>
+    <script>const player = new Plyr('audio');</script>
+</body>
+</html>

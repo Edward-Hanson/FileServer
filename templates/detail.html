@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ file.title }}</h2>
+<h3>{{ file.description }}</h3>
+<a href="{% url 'send_email' pk= file.pk %}">Share via Mail</a>
+{% endblock content%}  

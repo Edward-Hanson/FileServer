@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Preview</title>
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css">
+</head>
+<body>
+    <video controls crossorigin playsinline poster="{{ file_url }}">
+        <source src="{{ file_url }}" type="video/mp4">
+    </video>
+
+    <script src="https://cdn.plyr.io/3.6.8/plyr.js"></script>
+    <script>const player = new Plyr('video');</script>
+</body>
+</html>
