@@ -1,5 +1,4 @@
 from django.db import models
-from django.shortcuts import get_object_or_404
 import os
 
 # Create your models here.
@@ -13,7 +12,7 @@ class FilesAdmin(models.Model):
     def get_file_type(self):
         file_extension = os.path.splitext(self.adminupload.name)[1]
         file_type = file_extension.lower().lstrip('.')
-        if file_type in ['jpg','png','gif']:
+        if file_type in ['jpg','png','gif','jpeg']:
             return 'image'
         elif file_type in ['mp4','mkv','webm']:
             return 'video'
