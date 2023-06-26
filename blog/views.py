@@ -25,8 +25,7 @@ class Download(View):
         file_obj = get_object_or_404(FilesAdmin, id=file_id)
         file_obj.downloadcount += 1
         file_obj.save()
-        return FileResponse(open(file_obj.adminupload.path, 'rb'), as_attachment=True)
-    
+        return file_obj.adminupload.url
 
 
 def preview_file(request, file_id):
@@ -58,6 +57,8 @@ def send_email(request, pk):
     if request.method == 'POST':
         form = EmailForm(request.POST)
         if form.is_valid():
+            default_active_file.emailcount+=1
+            default_active_file.save()
             recipient_email = form.cleaned_data['recipient_email']
 
             email = EmailMessage(
