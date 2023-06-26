@@ -1,8 +1,76 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-{% for post in files %}
-<h2><a href="{% url 'detail' pk=post.pk %}">{{ post.title }}</a></h2>
+  <div class="container">
+    <h1 class="text-center mt-4 mb-4" style="font-size: 28px;">File Server</h1>
 
-<a href="{% url 'file-download' file_id=post.id %}">Download</a>|<a href="{% url 'file_preview' file_id=post.id %}">Preview</a><br>
-{% endfor %}
-{% endblock content%}  
+    <div class="row">
+      <div class="col-md-12">
+        <h3 class="ml-3">All Files</h3>
+        
+        <div class="row">
+          {% for file in files %}
+            <div class="col-md-4">
+              <div class="card mb-4">
+                <div class="card-body">
+                  <div class="file-icon-container">
+                    {% if file.get_file_type == 'image' %}
+                      <img src="{% static 'images/image_icon.jpg' %}" class="file-icon img-fluid" alt="Image Icon">
+                    {% elif file.get_file_type == 'video' %}
+                      <img src="{% static 'images/video_icon.jpg' %}" class="file-icon img-fluid" alt="Video Icon">
+                    {% elif file.get_file_type == 'audio' %}
+                      <img src="{% static 'images/sound_icon.jpg' %}" class="file-icon img-fluid" alt="Audio Icon">
+                    {% elif file.get_file_type == 'pdf' %}
+                      <img src="{% static 'images/pdf_icon.jpg' %}" class="file-icon img-fluid" alt="PDF Icon">
+                    {% else %}
+                      <img src="{% static 'file_icon.jpg' %}" class="file-icon img-fluid" alt="File Icon">
+                    {% endif %}
+                  </div>
+                  <h5 class="card-title text-center mt-3 mb-3"><a href="{% url 'detail' file.pk %}">{{ file.title }}</a></h5>
+                  <div class="file-info">
+                    <span class="file-info-item">Downloads: {{ file.downloadcount }}</span>
+                    <span class="file-info-item">Emails Sent: {{ file.emailcount }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Include the necessary CSS and font files for Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    .file-icon-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+    }
+    .file-icon {
+      max-width: 120px;
+      max-height: 120px;
+    }
+    .card-body {
+      padding-bottom: 1.25rem;
+    }
+    .file-info {
+      margin-top: 10px;
+    }
+    .file-info-item {
+      display: block;
+      font-size: 14px;
+    }
+    .ml-3 {
+      text-align: left;
+    }
+    .card-title {
+      margin-top: 0.5rem;
+      margin-bottom: 5px;
+      font-size: 20px;
+    }
+  </style>
+{% endblock %}

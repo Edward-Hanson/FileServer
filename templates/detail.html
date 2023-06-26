@@ -1,7 +1,100 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-<h2>{{ file.title }}</h2>
-<h3>{{ file.description }}</h3>
-<a href="{% url 'file_detail' pk=file.pk %}">Share via Mail</a>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card mt-5">
+          <div class="card-body text-center">
+            <div class="file-icon-container">
+              {% if file.get_file_type == 'image' %}
+                <img src="{% static 'images/image_icon.jpg' %}" class="file-icon img-fluid" alt="Image Icon">
+              {% elif file.get_file_type == 'video' %}
+                <img src="{% static 'images/video_icon.jpg' %}" class="file-icon img-fluid" alt="Video Icon">
+              {% elif file.get_file_type == 'audio' %}
+                <img src="{% static 'images/sound_icon.jpg' %}" class="file-icon img-fluid" alt="Audio Icon">
+              {% elif file.get_file_type == 'pdf' %}
+                <img src="{% static 'images/pdf_icon.jpg' %}" class="file-icon img-fluid" alt="PDF Icon">
+              {% else %}
+                <img src="{% static 'file_icon.jpg' %}" class="file-icon img-fluid" alt="File Icon">
+              {% endif %}
+            </div>
+            <h2 class="card-title mt-4 mb-3" style="font-size: 28px;">{{ file.title }}</h2>
+            <div class="file-actions mt-4">
+              <a href="{{ file.adminupload.url }}" class="btn btn-primary" download>Download</a>
+              <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#shareModal">Share via Email</button>
+              <a href="{% url 'file_preview' file_id=file.id %}" class="btn btn-success">Preview</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-{% endblock content%}  
+  <!-- Share via Email Modal -->
+  <div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="shareModalLabel">Share via Email</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="post" action="{% url 'share_mail' pk=file.pk %}">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="recipient_email">Recipient Email</label>
+              <input type="email" class="form-control" id="recipient_email" name="recipient_email" required>
+            </div>
+            <div class="form-group">
+              <label for="email_subject">Subject</label>
+              <input type="text" class="form-control" id="email_subject" name="email_subject" required>
+            </div>
+            <div class="form-group">
+              <label for="email_message">Message</label>
+              <textarea class="form-control" id="email_message" name="email_message" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Email</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Include the necessary CSS and font files for Bootstrap and Font Awesome -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <!-- Include the necessary JavaScript files for Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <style>
+    .file-icon-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+    }
+    .file-icon {
+      max-width: 200px;
+      max-height: 200px;
+    }
+    .file-preview {
+      margin-top: 20px;
+    }
+    .file-preview-image {
+      max-width: 100%;
+      height: auto;
+    }
+    .file-preview-video {
+      max-width: 100%;
+    }
+    .file-actions {
+      margin-top: 20px;
+    }
+  </style>
+{% endblock %}

@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}File Server{% endblock title %}</title>
+    <title>{% block title %}File Home{% endblock title %}</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -41,7 +41,7 @@
             
           <div class="d-flex flex-column flex-md-row align-items-center mt-3 mt-md-0">
             <div class="search-form mb-3 mb-md-0">
-              <form class="d-flex">
+              <form method= "get" action= "{% url 'search_results' %}" class="d-flex">
                 <input name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
               </form>
             </div>
@@ -49,7 +49,7 @@
             
             {% if user.is_authenticated and user.is_staff %}
             <div class="upload-btn">
-              <a href="#" class="btn btn-secondary btn-sm">
+              <a href="{% url 'upload' %}" class="btn btn-secondary btn-sm">
                 <i class="bi bi-cloud-arrow-up-fill me-2"></i>Add File
               </a>
             </div>
