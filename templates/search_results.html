@@ -1,10 +1,23 @@
-<!-- templates/books/search_results.html -->
 {% extends 'base.html' %}
-{% block title %}Search{% endblock title %}
+{% block title %}Search Results{% endblock title %}
+
 {% block content %}
- <h1>Search Results</h1>
- {% for result in results %}
- <h2>{{ result.title }}</h1>
- <a href="{% url 'file-download' file_id=result.id %}">Download</a>|<a href="{% url 'file_preview' file_id=result.id %}">Preview</a>
- {% endfor %}
- {% endblock content%}  
+  <div class="container">
+    <h1 class="mt-4 mb-4">Search Results</h1>
+    <div class="row">
+      {% for result in results %}
+      <div class="col-md-6">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h2 class="card-title">{{ result.title }}</h2>
+            <div class="btn-group" role="group">
+              <a href="{% url 'file-download' file_id=result.id %}" class="btn btn-primary">Download</a>
+              <a href="{% url 'file_preview' file_id=result.id %}" class="btn btn-success">Preview</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock content %}
