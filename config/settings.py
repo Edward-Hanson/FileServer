@@ -128,10 +128,13 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR,'media_cdn')
 
 #new configurations
+AUTHENTICATION_BACKENDS= ['django.contrib.auth.backends.ModelBackend',
+                          'accounts.backend.EmailBackend',]
+
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 LANGUAGE_CODE = 'en-uk'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'list'
 LOGOUT_REDIRECT_URL = 'login'
 
 #Email configuration
