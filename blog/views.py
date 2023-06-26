@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.http import FileResponse,HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views import View
 from .models import FilesAdmin
@@ -7,49 +6,54 @@ import os
 from django.db.models import Q
 from django.core.mail import EmailMessage
 from django.conf import settings
-from .forms import EmailForm
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
+
+from .forms import EmailForm,UploadForm
+from django.shortcuts import redirect
+from django.contrib import messages
 
 # Create your views here.
+@login_required
 def listfiles(request):
     files = FilesAdmin.objects.all()
     return render(request,'list.html',{'files':files})
 
+@login_required
 def detailfile(request,pk):
     file= get_object_or_404(FilesAdmin,pk=pk)
     return render(request,'detail.html',{'file':file})
 
-
-class Download(View):
-    
-    def get(self, request, file_id):
-        file_obj = get_object_or_404(FilesAdmin, id=file_id)
-        file_obj.downloadcount += 1
-        file_obj.save()
-        return file_obj.adminupload.url
-
-
-def preview_file(request, file_id):
+@login_required
+def download(self, request, file_id):
     file_obj = get_object_or_404(FilesAdmin, id=file_id)
-    file_extension = os.path.splitext(file_obj.adminupload.name)[1].lower()
-
-    if file_extension == '.pdf':
-        return render(request, 'preview_pdf.html', {'file_url': file_obj.adminupload.url})
-    elif file_extension in ['.jpg', '.jpeg', '.png', '.gif']:
-        return render(request, 'preview_image.html', {'file_url': file_obj.adminupload.url})
-    elif file_extension in ['.mp4', '.avi', '.mkv']:
-        return render(request, 'preview_video.html', {'file_url': file_obj.adminupload.url})
-    elif file_extension in ['.mp3', '.wav', '.ogg']:
-        return render(request, 'preview_audio.html', {'file_url': file_obj.adminupload.url})
-    else:
-        return render(request, 'preview_unsupported.html')
+    file_obj.downloadcount += 1
+    file_obj.save()
+    return file_obj.adminupload.url
     
-    
+@login_required   
 def query_set(request):
     query = request.GET.get('q')
+    if query is None:
+        return
     results = FilesAdmin.objects.filter(Q(title__icontains=query)  | Q(description__icontains= query))
     return render(request,'search_results.html',{'results': results})
 
+@staff_member_required
+@login_required
+def upload(request):
+    if request.method=="POST":
+        form= UploadForm(request.POST,request.FILES)
+        if form.is_valid():
+            file = form.save()
+            messages.info(request,"Upload Success")
+            return redirect('detail', pk=file.pk)
+    else:
+        form= UploadForm()
+    return render(request,'upload.html',{'form':form})
 
+
+@login_required 
 def send_email(request, pk):
     user = request.user
     default_active_file = get_object_or_404(FilesAdmin, pk=pk)
@@ -73,7 +77,8 @@ def send_email(request, pk):
 
             email.send()
 
-            return HttpResponse('Email sent successfully!')
+            messages.info(request, 'Email sent successfully!')
+            return redirect('detail',pk=default_active_file.pk)
     else:
         form = EmailForm()
 
