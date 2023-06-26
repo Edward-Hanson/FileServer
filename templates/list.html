@@ -27,10 +27,12 @@
                     {% endif %}
                   </div>
                   <h5 class="card-title text-center mt-3 mb-3"><a href="{% url 'detail' file.pk %}">{{ file.title }}</a></h5>
+                  {% if user.is_staff %}
                   <div class="file-info">
                     <span class="file-info-item">Downloads: {{ file.downloadcount }}</span>
                     <span class="file-info-item">Emails Sent: {{ file.emailcount }}</span>
                   </div>
+                  {% endif %}
                 </div>
               </div>
             </div>
