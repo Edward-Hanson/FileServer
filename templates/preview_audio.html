@@ -1,15 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Audio Preview</title>
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css">
-</head>
-<body>
-    <audio controls>
-        <source src="{{ file_url }}" type="audio/mp3">
-    </audio>
+{% extends 'base.html' %}
 
-    <script src="https://cdn.plyr.io/3.6.8/plyr.js"></script>
-    <script>const player = new Plyr('audio');</script>
-</body>
-</html>
+{% block content %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card mt-5">
+          <div class="card-body text-center">
+            <h2 class="card-title mt-4 mb-3" style="font-size: 28px;">Audio Preview</h2>
+            <div class="file-preview">
+              <audio src="{{ file_url }}" controls></audio>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

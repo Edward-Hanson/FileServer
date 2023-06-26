@@ -1,15 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Video Preview</title>
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css">
-</head>
-<body>
-    <video controls crossorigin playsinline poster="{{ file_url }}">
-        <source src="{{ file_url }}" type="video/mp4">
-    </video>
+{% extends 'base.html' %}
 
-    <script src="https://cdn.plyr.io/3.6.8/plyr.js"></script>
-    <script>const player = new Plyr('video');</script>
-</body>
-</html>
+{% block content %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card mt-5">
+          <div class="card-body text-center">
+            <h2 class="card-title mt-4 mb-3" style="font-size: 28px;">Video Preview</h2>
+            <div class="file-preview">
+              <video src="{{ file_url }}" class="file-preview-video" controls></video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

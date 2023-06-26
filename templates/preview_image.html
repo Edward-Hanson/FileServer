@@ -1,9 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Image Preview</title>
-</head>
-<body>
-    <img src="{{ file_url }}" alt="Image Preview">
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card mt-5">
+          <div class="card-body text-center">
+            <h2 class="card-title mt-4 mb-3" style="font-size: 28px;">Image Preview</h2>
+            <div class="file-preview">
+              <img src="{{ file_url }}" class="file-preview-image" alt="Image Preview">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
