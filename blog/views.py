@@ -25,11 +25,11 @@ def detailfile(request,pk):
     return render(request,'detail.html',{'file':file})
 
 @login_required
-def download(self, request, file_id):
-    file_obj = get_object_or_404(FilesAdmin, id=file_id)
+def download(request, file_id):
+    file_obj = get_object_or_404(FilesAdmin, pk=file_id)
     file_obj.downloadcount += 1
     file_obj.save()
-    return file_obj.adminupload.url
+    return redirect(file_obj.adminupload.url)
     
 @login_required   
 def query_set(request):
@@ -61,21 +61,19 @@ def send_email(request, pk):
     if request.method == 'POST':
         form = EmailForm(request.POST)
         if form.is_valid():
-            default_active_file.emailcount+=1
-            default_active_file.save()
             recipient_email = form.cleaned_data['recipient_email']
 
             email = EmailMessage(
                 subject='File Attachment',
-                body='Please find the attached file.',
+                body='Please find the attached file',
                 from_email=user.email,
                 to=[recipient_email],
             )
-
-            file_path = os.path.relpath(default_active_file.adminupload.path, settings.MEDIA_ROOT)
             email.attach_file(default_active_file.adminupload.path)
-
             email.send()
+            
+            default_active_file.emailcount+=1
+            default_active_file.save()
 
             messages.info(request, 'Email sent successfully!')
             return redirect('detail',pk=default_active_file.pk)
