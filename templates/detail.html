@@ -8,21 +8,21 @@
           <div class="card-body text-center">
             <div class="file-icon-container">
               {% if file.get_file_type == 'image' %}
-                <img src="{% static 'images/image_icon.jpg' %}" class="file-icon img-fluid" alt="Image Icon">
+                <img src="{{file.adminupload.url}}" class="file-icon img-fluid" alt="{{file.title}}">
               {% elif file.get_file_type == 'video' %}
-                <img src="{% static 'images/video_icon.jpg' %}" class="file-icon img-fluid" alt="Video Icon">
+              <img src="{% static 'images/video_icon.jpg' %}" class="file-icon img-fluid" alt="{{file.title}}">
               {% elif file.get_file_type == 'audio' %}
-                <img src="{% static 'images/sound_icon.jpg' %}" class="file-icon img-fluid" alt="Audio Icon">
+                <img src="{% static 'images/sound_icon.jpg' %}"  alt="{{file.title}}"  >
               {% elif file.get_file_type == 'pdf' %}
-                <img src="{% static 'images/pdf_icon.jpg' %}" class="file-icon img-fluid" alt="PDF Icon">
+                <img src="{% static 'images/pdf_icon.jpg' %}" class="file-icon img-fluid" alt="{{file.title}}">
               {% else %}
-                <img src="{% static 'file_icon.jpg' %}" class="file-icon img-fluid" alt="File Icon">
+                <img src="{% static 'file_icon.jpg' %}" class="file-icon img-fluid" alt="{{file.title}}">
               {% endif %}
             </div>
             <h2 class="card-title mt-4 mb-3" style="font-size: 28px;">{{ file.title }}</h2>
             <p class="card-text">{{ file.description }}</p>
             <div class="file-actions mt-4">
-              <a href="{{ file.adminupload.url }}" class="btn btn-primary" download>Download</a>
+              <a href="{% url 'file_download' file.pk %}" class="btn btn-primary" download>Download</a>
               <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#shareModal">Share via Email</button>
               <a class="btn btn-success mx-1" href="{{ file.adminupload.url }}" target="_blank">Preview</a>
             </div>
@@ -49,23 +49,13 @@
               <label for="recipient_email">Recipient Email</label>
               <input type="email" class="form-control" id="recipient_email" name="recipient_email" required>
             </div>
-            <div class="form-group">
-              <label for="email_subject">Subject</label>
-              <input type="text" class="form-control" id="email_subject" name="email_subject" required>
-            </div>
-            <div class="form-group">
-              <label for="email_message">Message</label>
-              <textarea class="form-control" id="email_message" name="email_message" rows="4" required></textarea>
-            </div>
+            <br>
             <button type="submit" class="btn btn-primary">Send Email</button>
           </form>
         </div>
       </div>
     </div>
   </div>
-  <!-- Include the necessary CSS and font files for Bootstrap and Font Awesome -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
   <!-- Include the necessary JavaScript files for Bootstrap -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

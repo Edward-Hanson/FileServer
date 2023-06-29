@@ -15,15 +15,15 @@
                 <div class="card-body">
                   <div class="file-icon-container">
                     {% if file.get_file_type == 'image' %}
-                      <img src="{% static 'images/image_icon.jpg' %}" class="file-icon img-fluid" alt="Image Icon">
+                      <img src="{{file.adminupload.url}}" class="file-icon img-fluid" alt="{{file.title}}">
                     {% elif file.get_file_type == 'video' %}
-                      <img src="{% static 'images/video_icon.jpg' %}" class="file-icon img-fluid" alt="Video Icon">
+                    <img src="{% static 'images/video_icon.jpg' %}" class="file-icon img-fluid" alt="{{file.title}}">
                     {% elif file.get_file_type == 'audio' %}
-                      <img src="{% static 'images/sound_icon.jpg' %}" class="file-icon img-fluid" alt="Audio Icon">
+                      <img src="{% static 'images/sound_icon.jpg' %}"  alt="{{file.title}}"  >
                     {% elif file.get_file_type == 'pdf' %}
-                      <img src="{% static 'images/pdf_icon.jpg' %}" class="file-icon img-fluid" alt="PDF Icon">
+                      <img src="{% static 'images/pdf_icon.jpg' %}" class="file-icon img-fluid" alt="{{file.title}}">
                     {% else %}
-                      <img src="{% static 'file_icon.jpg' %}" class="file-icon img-fluid" alt="File Icon">
+                      <img src="{% static 'file_icon.jpg' %}" class="file-icon img-fluid" alt="{{file.title}}">
                     {% endif %}
                   </div>
                   <h5 class="card-title text-center mt-3 mb-3"><a href="{% url 'detail' file.pk %}">{{ file.title }}</a></h5>
