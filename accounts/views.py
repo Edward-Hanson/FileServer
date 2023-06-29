@@ -66,7 +66,8 @@ def activate_account(request, uidb64, token):
         messages.success(request, "Account Activated. You can now login")
         return redirect('login')
     else:
-        return render(request, 'registration/activation_invalid.html')
+        messages.error(request, "Invalid activation link")
+        return redirect("login")
     
 def login_View(request):
     
