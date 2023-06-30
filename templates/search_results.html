@@ -1,23 +1,41 @@
 {% extends 'base.html' %}
+{% load static %}
+
+
 {% block title %}Search Results{% endblock title %}
 
 {% block content %}
-  <div class="container">
-    <h1 class="mt-4 mb-4">Search Results</h1>
-    <div class="row">
-      {% for result in results %}
-      <div class="col-md-6">
-        <div class="card mb-4">
-          <div class="card-body">
-            <h2 class="card-title">{{ result.title }}</h2>
-            <div class="btn-group" role="group">
-              <a href="{% url 'file-download' file_id=result.id %}" class="btn btn-primary">Download</a>
-              <a href="{% url 'file_preview' file_id=result.id %}" class="btn btn-success">Preview</a>
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-12">
+      <h3 class="ml-3">Search results for "{{query}}"</h3>
+      <br>
+      <div class="row">
+        {% for file in files %}
+          <div class="col-md-4">
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="file-icon-container">
+                  {% if file.get_file_type == 'image' %}
+                    <img src="{{file.adminupload.url}}" class="file-icon img-fluid" alt="{{file.title}}">
+                  {% elif file.get_file_type == 'video' %}
+                  <img src="{% static 'images/video_icon.jpg' %}" class="file-icon img-fluid" alt="{{file.title}}">
+                  {% elif file.get_file_type == 'audio' %}
+                    <img src="{% static 'images/sound_icon.jpg' %}"  alt="{{file.title}}"  >
+                  {% elif file.get_file_type == 'pdf' %}
+                    <img src="{% static 'images/pdf_icon.jpg' %}" class="file-icon img-fluid" alt="{{file.title}}">
+                  {% else %}
+                    <img src="{% static 'file_icon.jpg' %}" class="file-icon img-fluid" alt="{{file.title}}">
+                  {% endif %}
+                </div>
+                <h5 class="card-title text-center mt-3 mb-3"><a href="{% url 'detail' file.pk %}">{{ file.title }}</a></h5>
+              </div>
             </div>
           </div>
-        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
     </div>
   </div>
+</div>
 {% endblock content %}

@@ -37,7 +37,9 @@ def query_set(request):
     if query is None:
         return
     results = FilesAdmin.objects.filter(Q(title__icontains=query)  | Q(description__icontains= query))
-    return render(request,'search_results.html',{'results': results})
+    context = {'files': results,
+               'query': query}
+    return render(request,'search_results.html', context)
 
 @staff_member_required
 @login_required
